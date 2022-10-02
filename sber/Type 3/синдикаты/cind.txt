@@ -1,0 +1,50 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+void dfs (set<set<int>> &cindicates, vector<vector<int>> &graf, vector<int> que, vector<bool> used, int node)
+{
+    for (int i = 0; i < graf[node].size(); ++i) {
+        //перебор узлов, в которые можно попасть
+        if (used[graf[node][i]] == true) {
+            //получить синдикат
+            int find = graf[node][i];
+            set <int> ss{find};
+            for (int j = que.size() - 1; que[j] != find; --j) ss.insert (que[j]);
+            cindicates.insert (ss);
+        } else {
+            //неповторяющийся узел
+            que.push_back (graf[node][i]);
+            used[graf[node][i]] = true;
+            dfs (cindicates, graf, que, used, graf[node][i]);
+            que.pop_back();
+            used[graf[node][i]] = false;
+        }
+    }
+};
+
+int getResult (vector<string> deal)
+{
+    vector<vector<int>> graf (27, vector<int>());
+    for (auto x : deal) {
+        vector<int> g;
+        for (int i = 2; i < x.length(); ++i)
+            g.push_back (x[i] - 97);
+        graf[int (x[0] - 97)] = g;
+    }
+    set<set<int>> result;
+    for (int i = 0; i < graf.size(); ++i) {
+        if (graf[i].size() == 0) continue;
+        //начальный узел
+        vector<int> que (1, i);
+        vector<bool> used (27, false);
+        dfs (result, graf, que, used, i);
+    }
+    return result.size();
+}
+
+
+int main()
+{
+    cout << getResult ({"a-b", "b-c", "c-a"});
+    return 0;
+}

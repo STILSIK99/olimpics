@@ -1,0 +1,31 @@
+#include <bits/stdc++.h>
+using namespace  std;
+
+/**
+ * Implement function getResult
+ */
+bool getResult (vector<string> time)
+{
+    vector<pair<int, int>> tt;
+    for (auto x : time) {
+        tt.push_back (
+            make_pair (
+                stoi (x.substr (0, 2)),
+                stoi (x.substr (3, 2))
+            ));
+    }
+    sort (tt.begin(), tt.end());
+    for (int i = 0; i < tt.size(); ++i) {
+        for (int j = i + 1; j < tt.size(); ++j)
+            if (tt[j].first < tt[i].second) return false;
+    }
+
+    return true;
+}
+
+int main()
+{
+
+    cout << getResult ({"07-09", "10-12", "15-19"});
+    return 0;
+}

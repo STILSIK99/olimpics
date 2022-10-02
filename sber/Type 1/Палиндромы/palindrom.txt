@@ -1,0 +1,11 @@
+bool getResult (vector<int> numb)
+{
+    vector<int> counter (21, 0);
+    for (int k : numb)
+        ++counter[k];
+    int c = 0;
+    for (auto x : numb)
+        if (counter[x] % 2 == 1) ++c ;
+    if (c < 2) return true;
+    return false;
+}

@@ -1,0 +1,73 @@
+ld distance_to_finish (p_ll a, ll rad, p_ll finish)
+{
+    ld ans = 0;
+    p_ll p1 (min (0ll, finish.first), max (0ll, finish.second)), p2 (max (0ll, finish.first), max (0ll, finish.second)), p3 (max (0ll, finish.first), min (0ll, finish.second)), p4 (min (0ll, finish.first), min (0ll, finish.second));
+    if (a.first >= p1.first && a.first <= p3.first && a.second <= p1.second && a.second >= p3.second ) return 0.;
+    if (a.first < p1.first && a.second > p1.second) ans = sqrt (pow ((a.first - p1.first), 2.) + pow ((a.second - p1.second), 2.));
+    if (a.first > p2.first && a.second > p2.second) ans = sqrt (pow ((a.first - p2.first), 2.) + pow ((a.second - p2.second), 2.));
+    if (a.first > p3.first && a.second < p3.second) ans = sqrt (pow ((a.first - p3.first), 2.) + pow ((a.second - p3.second), 2.));
+    if (a.first < p4.first && a.second < p4.second) ans = sqrt (pow ((a.first - p4.first), 2.) + pow ((a.second - p4.second), 2.));
+    if (a.first > p3.first && a.second <= p2.second && a.second >= p3.second) ans = a.first - p2.first;
+    if (a.first < p1.first && a.second <= p1.second && a.second >= p4.second) ans = p1.first - a.first;
+    if (a.second > p1.second && a.first <= p1.first && a.first >= p4.first) ans = a.second - p1.second;
+    if (a.second < p4.second && a.first <= p1.first && a.first >= p4.first) ans = p4.second - a.second;
+    return max (ans - rad, ld (0.));
+}
+
+
+ld Dijkstra (vector<vector<pair<ll, ld>>> &matr, v_i &rad, ll start, ll finish)
+{
+    ll n = matr.size();
+    vector<bool> used (n, false);
+    vector <ld> lengths (n, INF);
+    lengths[start] = ld (0.);
+    set<pair<ld, ll>> mas;
+    mas.insert (mp (lengths[start], start));
+    while (!mas.empty()) {
+        ll v = mas.begin()->second;
+        ld len = mas.begin()->first;
+        if (used[v] == false) used[v] = true;
+        else continue;
+        mas.erase (mas.begin());
+        if (len > lengths[v]) continue;
+        forin (0, matr.size()) {
+            int n_v = i;
+            ld n_len = len;
+            if (n_v == v) continue;
+            //считаем расстояние
+            if (n_v == 1) {
+                n_len += distance_to_finish (matr[v], rad[v], matr[n_v]);
+            } else {
+                ld gip = sqrt (pow (matr[v].first - matr[n_v].first, 2.0) + pow (matr[v].second - matr[n_v].second, 2.0));
+                n_len += max (gip - rad[n_v] - rad[v], ld (0.));
+            }
+            //сравниваем с имеющимся
+            if (lengths[n_v] > n_len) {
+                mas.erase (make_pair (lengths[n_v], n_v));
+                lengths[n_v] = n_len;
+                mas.insert (make_pair (n_len, n_v));
+            }
+        }
+    }
+    return lengths[finish];
+}
+
+void solve()
+{
+    p_ll start, finish;
+    ll n_tree;
+    cin >> finish.first >> finish.second >> start.first >> start.second >> n_tree;
+    vp_ll mas (n_tree + 2);
+    mas[0] = start;
+    mas[1] = finish;
+    v_i rad (n_tree + 2);
+    rad[0] = 0;
+    rad[1] = 0;
+    forin (0, n_tree) {
+        cin >> get<0> (mas[i + 2]) >> get<1> (mas[i + 2]) >> rad[i + 2];
+    }
+
+    //    cout << start.first << " " << start.second << " - " ;
+    //    cout << setprecision (10) << Dijkstra (mas, rad, 0, 1);
+    cout << "\n";
+}

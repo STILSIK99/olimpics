@@ -1,0 +1,31 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+vector<int> getResult (vector<int> nums)
+{
+    pair<int, int> ans (0, 0);
+    int maxSum = nums[0],
+        start = 0, finish = 0,
+        sum = 0, last_minus = -1;
+    for (int i = 0; i < nums.size(); ++i) {
+        sum += nums[i];
+        if (sum > maxSum) {
+            maxSum = sum, start = last_minus + 1;
+            finish = i, ans = make_pair (start, finish);
+        }
+        if (sum < 0)
+            sum = 0, last_minus = i;
+    }
+    vector <int> result (ans.second - ans.first + 1);
+    for (int i = ans.first; i <= ans.second; ++i)
+        result[i - ans.first] = nums[i];
+    return result;
+}
+
+int main()
+{
+
+    auto x = getResult (vector<int> {4, 5, 8, -2, 1});
+    for (auto i : x) cout << i << " ";
+    return 0;
+}

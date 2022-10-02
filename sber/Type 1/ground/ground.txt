@@ -1,0 +1,24 @@
+
+int getResult(vector<int> ground){
+    int sum = 0;
+    multiset<int> mas(ground.begin(), ground.end());
+    vector<int> mas_sum(ground.size());
+    int i = 0;
+    for(auto x : mas){
+        sum += x;
+        mas_sum[i++] = sum;
+    }
+    int ans = sum - *mas.begin() * ground.size();
+    for (int hi = *mas.begin(); hi < 200; ++hi){
+        auto x = mas.upper_bound(hi);
+        if (x == mas.end()) break;
+        int dist = distance(mas.begin(),x);
+        int step_ans = 0;
+        if (dist > 0) {
+            step_ans += hi * (dist) - mas_sum[dist - 1];
+            step_ans += (sum - mas_sum[dist - 1]) - hi * (ground.size() - dist);
+        }
+        ans = min(ans, step_ans);
+    }
+    return ans;
+}

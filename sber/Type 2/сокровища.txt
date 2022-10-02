@@ -1,0 +1,21 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+
+int recur (int pos, int ans, vector<int> &chests, int curT, int t)
+{
+    if (pos == chests.size() || curT == t) return ans;
+    int ans1, ans2;
+    if (curT + 2 <= t)
+        ans1 = recur (pos + 1, ans + chests[pos], chests, curT + 2, t);
+    else ans1 = ans + chests[pos];
+    ans2 = recur (pos + 1, ans, chests, curT + 1, t);
+    return max (ans1, ans2);
+}
+
+
+int getResult (vector<int> chests, int t)
+{
+    return recur (0, 0, chests, 0, t);
+}
+

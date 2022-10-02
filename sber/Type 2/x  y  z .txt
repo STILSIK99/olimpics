@@ -1,0 +1,20 @@
+bool getResult (vector<string> subArray, int k)
+{
+    // Write your code here...
+    map<string, int> uses;
+    for (auto x : subArray) {
+        if (uses.count (x) == 0) uses[x] = 0;
+        uses[x] += 1;
+    }
+    int x = uses["x"], y = uses["y"], z = uses["z"];
+    for (int xi = 1; xi < 150; ++xi) {
+        for (int yi = 1; yi < 150; ++yi) {
+            for (int zi = 1; zi < 150; ++zi) {
+                if (x * xi + y * yi + z * zi == k) {
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
+}

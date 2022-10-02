@@ -1,0 +1,37 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int getResult (vector<string> scheme)
+{
+    vector<vector<int>> sch (scheme.size(), vector<int>());
+    for (int j = 0; j < scheme.size(); ++j)
+        for (int i = 0; i < scheme[j].length(); i += 2)
+            if (scheme[j][i] == '0') sch[j].push_back (0);
+            else sch[j].push_back (1);
+    int ii = sch.size() - 1,
+        jj = sch[0].size() - 1;
+    vector<int> cash{ 0, 0, 0, 13, 0, 21, 15, 29, 0, 10, 20, 31, 17, 32, 40, 63};
+    int sum = 0;
+    for (int i = 0; i < sch.size(); ++i)
+        for (int j = 0; j < sch[i].size(); ++j) {
+            // i - строка, j - столбик
+            if (sch[i][j] == 0) continue;
+            int k = 0;
+            if (sch[i][max (0, j - 1)] == 1) k += 1;
+            if (sch[max (i - 1, 0)][j] == 1) k += 2;
+            if (sch[i][min (jj, j + 1)] == 1) k += 4;
+            if (sch[min (ii, i + 1)][j] == 1) k += 8;
+            sum += cash[k];
+        }
+    return sum;
+}
+
+
+int main()
+{
+    cout << getResult ({"0-0-0-0",
+                        "1-1-1-0",
+                        "0-0-1-0",
+                        "0-0-1-0"});
+    return 0;
+}

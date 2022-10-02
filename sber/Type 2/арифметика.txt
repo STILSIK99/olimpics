@@ -1,0 +1,37 @@
+#include <iostream>
+#include <bits/stdc++.h>
+using namespace std;
+
+int getResult (vector<int> numb, vector<string> arith)
+{
+    long long result = -1e9;
+    // do {
+    for(int j = 0; j < 1e5; ++j){
+        next_permutation (arith.begin(), arith.end());
+        long long k = 0;
+        // cout << k
+        for (int i = 0; i < arith.size(); ++i) {
+            // cout << " " + arith[i] + " " << numb[i];
+            if (k == -1e9) break;
+            if (arith[i] == "+") k += numb[i];
+            if (arith[i] == "-") k -= numb[i];
+            if (arith[i] == "*") k *= numb[i];
+            if (arith[i] == "//") {
+                if (numb[i] == 0) k = -1e9;
+                else if (k != 0) k /= numb[i];
+                else k = 0;
+            }
+        }
+        // cout << " = " << k << "\n";
+        result = max (result, k);
+        //        ;
+    } 
+    // while ();
+    return result;
+}
+
+void runCode()
+{
+    // Entrypoint to debug your function
+    // cout << getResult ({1, 0, 1, 4}, {"/", "/", "/", "+"});
+}

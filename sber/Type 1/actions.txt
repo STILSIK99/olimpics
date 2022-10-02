@@ -1,0 +1,26 @@
+int getResult (vector<string> actions)
+{
+    string acts = "pkcc";
+        for (auto x : actions) {
+            if (x == "power") acts += "p";
+            if (x == "keystrokes") acts += "k";
+            if (x == "click") acts += "c";
+        }
+    int counter = 0;
+    while (true) {
+        int p1 = acts.find_first_of ("p");
+        if (p1 == -1) break;
+        int p2;
+        if (acts.substr (p1 + 1, acts.length() - p1 - 1).find_first_of ("p") == -1) p2 = acts.length();
+        else p2 = acts.substr (p1 + 1, acts.length() - p1 - 1).find_first_of ("p") + p1 + 1;
+        string curStr = acts.substr (p1, p2 - p1 + 1);
+        int it_k = curStr.find_last_of ("k") + p1;
+        for (int i = it_k; i < curStr.length(); ++i) {
+            if (acts[i] == 'c' && acts[i + 1] == 'c')
+                ++counter, ++i;
+        }
+        if (p2 == acts.length()) break;
+        acts = acts.substr (p2 + 1, acts.length() - p2 - 1);
+    }
+    return counter;
+}

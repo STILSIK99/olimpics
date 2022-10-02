@@ -1,0 +1,32 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+
+bool recur (vector<bool> used, vector<int> &fen, int pos)
+{
+    if (pos == fen.size() - 1) return true;
+    for (int i = 0; i < fen.size(); ++i) {
+        if (used[i] == false && fen[i] != 0) {
+            if (pos + fen[i] >= 0 && pos + fen[i] < fen.size()) {
+                used[i] = true;
+                if (recur (used, fen, pos + fen[i]) == true) return true;
+                used[i] = false;
+            }
+        }
+    }
+    return false;
+}
+
+bool getResult (vector<int> fences)
+{
+    // multiset<int> f(fences.begin(), fences.end());
+    int pos = 0;
+    return recur (vector<bool> (fences.size(), 0), fences, 0);
+}
+
+
+int main()
+{
+    cout << getResult ({0, 2, 4, 1, 6, 2});
+    return 0;
+}

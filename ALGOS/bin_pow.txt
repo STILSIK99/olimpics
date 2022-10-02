@@ -1,0 +1,27 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+
+typedef long long ll;
+typedef vector<ll> vll;
+
+template<typename T>
+T bin_pow(T a,int k){
+    T ans(1);
+    T st = a;
+    if (k == 1) return ans;
+    while (k != 0){
+        if (k % 2) ans = ans * st;
+        st = st * st;
+        k /= 2;
+    }
+    return ans;
+}
+
+
+
+int main(){
+    cout << bin_pow(ll(2),31);
+    return 0;
+}
+

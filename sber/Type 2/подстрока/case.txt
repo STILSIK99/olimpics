@@ -1,0 +1,63 @@
+#include <iostream>
+#include <cstring>
+#include <vector>
+
+using namespace std;
+
+/**
+ * Implement function getResult
+ */
+int getResult (string s, string symbol)
+{
+    char last = s[s.length() - 1];
+    int ans = s.length() - s.find_last_of (" ") - 1;
+    bool gl = false;
+    if (s.find_last_of (" ") == s.find_first_of (" "))
+        gl = true;
+    vector <pair<char, int> > str;
+    char sy;
+    int count = 0;
+    while (true) {
+        int k = s.find_first_of (" ");
+        if (k == -1) {
+            str.push_back (make_pair (s[0], s.length()));
+            break;
+        }
+        str.push_back (make_pair (s[0], k));
+        s = s.substr (k + 1, s.length() - k - 1);
+    }
+    if (gl) if (str[1].second < str[0].second) return ans;
+    sy = symbol[0];
+    int mmax = 0;
+    for (int i = 0; i < str.size(); ++i) {
+        if (str[i].first != sy) continue;
+        mmax = max (mmax, str[i].second);
+        bool fl = false;
+        while (true) {
+            if (i == -1 || str.size() == 1) break;
+            if (i > 0)
+                if (str[i - 1].second <= str[i].second) {
+                    str[i].second += str[i - 1].second + 1;
+                    str.erase (str.begin() + i - 1);
+                    fl = true;
+                    break;
+                }
+            if (i <  str.size() - 1)
+                if (str[i + 1].second <= str[i].second) {
+                    str[i].second += str[i + 1].second + 1;
+                    str.erase (str.begin() + i + 1);
+                    fl = true;
+                    continue;
+                } else break;
+        }
+        if (fl == true) i = -1;
+    }
+    //    if (last == symbol[0] && s.find_last_of (" ") == s.find_first_of (" "))
+    //        return ans;
+    return mmax;
+}
+
+void runCode()
+{
+    // Entrypoint to debug your function
+}

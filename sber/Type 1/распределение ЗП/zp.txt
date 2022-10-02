@@ -1,0 +1,12 @@
+int getResult (vector<int> cash, int s)
+{
+    multiset<int> c (cash.begin(), cash.end());
+    while (s > 0) {
+        int k = *c.begin() + min (3, s);
+        s -= 3;
+        c.erase (c.begin());
+        c.insert (k);
+    }
+    int n = distance (c.begin(), c.lower_bound (*c.rbegin()));
+    return (n == 0) ? 0 : n - 1;
+}

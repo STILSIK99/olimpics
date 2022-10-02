@@ -1,0 +1,15 @@
+int getResult (vector<int> nums, int k)
+{
+    // Write your code here...
+    int ans = 0;
+    multiset<int> mas (nums.begin(), nums.end());
+    while (true) {
+        auto s = mas.upper_bound (k);
+        if (s == mas.begin() || s == mas.end())
+            break;
+        ++ans;
+        ++k;
+        mas.erase (--s);
+    }
+    return ans;
+}

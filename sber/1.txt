@@ -1,0 +1,49 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+string toS (int p)
+{
+
+    string s;
+    stringstream str;
+    str << p;
+    s = str.str();
+    return s;
+}
+
+
+int recur (string p, vector<bool> used, int ind, int count)
+{
+    if (count == p.length() / 2) {
+        int res = 0;
+        for (int i = 0; i < p.length(); ++i) {
+            if (used[i] == 1) {
+                res = res * 10 + p[i] - 48;
+            }
+        }
+        return res;
+    }
+    if (ind == p.length()) return -1;
+    if (ind < p.length()) {
+        used[ind] = 0;
+        int res1 = recur (p, used, ind + 1, count + 1);
+        used[ind] = 1;
+        int res2 = recur (p, used, ind + 1, count);
+        return max (res1, res2);
+    }
+}
+
+int getResult (int p)
+{
+    cin >> p;
+    string a = toS (p);
+    return recur (a, vector<bool> (a.length(), 1), 0, 0);
+}
+
+
+int main()
+{
+
+
+    return 0;
+}

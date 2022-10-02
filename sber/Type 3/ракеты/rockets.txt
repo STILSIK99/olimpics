@@ -1,0 +1,27 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+
+int getResult (vector<int> pos, vector<int> sp)
+{
+    int c = sp.size();
+    map<int, int> r;
+    for (int i = 0; i < sp.size(); ++i)
+        if (r.count (pos[i]) != 0) r[pos[i]] += sp[i];
+        else r[pos[i]] = sp[i];
+    for (int st = 0; (st < 1e5) && r.size() > 1; ++st) {
+        map<int, int> n_r;
+        for (auto x : r) {
+            if (n_r.count (x.first + x.second) != 0) n_r[x.first + x.second] += x.second;
+            else n_r[x.first + x.second] = x.second;
+        }
+        r = n_r;
+    }
+    return r.size();
+}
+
+int main()
+{
+    cout << getResult ({3, 11}, {5, 1});
+    return 0;
+}

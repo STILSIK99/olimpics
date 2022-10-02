@@ -1,0 +1,88 @@
+#include <iostream>
+#include <bits/stdc++.h>
+
+using namespace std;
+
+/**
+ * Implement function getResult
+ */
+
+int gcd (int a, int b)
+{
+    if (b == 0)
+        return a;
+    else
+        return gcd (b, a % b);
+}
+
+
+pair<vector<int>, vector<char>> parse (string p)
+{
+    vector<int> digits;
+    vector<char> simb;
+    int id = 0, digit = 0;
+    while (id != p.length()) {
+        if (p[id] >= 48 && p[id] <= 57) {
+            digit = digit * 10 + p[id] - 48;
+        } else {
+            digits.push_back (digit);
+            digit = 0;
+            simb.push_back (p[id]);
+        }
+        ++id;
+    }
+    digits.push_back (digit);
+    return make_pair (digits, simb);
+}
+
+int getResult (string s)
+{
+    auto p = parse (s);
+    auto d = p.first;
+    auto si = p.second;
+    vector<int> posl (si.size());
+    for (int i = 0; i < si.size(); ++i) {
+        posl[i] = i;
+    }
+    int ans = -999;
+    do {
+        vector<int> n = d;
+        int k = 0;
+        while (k < si.size()) {
+            for (int i = 0; i < si.size(); ++i) {
+                if (si[i] == k) {
+                    int f;
+                    switch (si[i]) {
+                        case '+':
+                            f = d[i] + d[i + 1];
+                            break;
+                        case '-':
+                            f = d[i] - d[i + 1];
+                            break;
+                        case '*':
+                            f = d[i] * d[i + 1];
+                            break;
+                        default:
+                            f = 0;
+                            break;
+                    }
+                    n.erase (n.begin() + i);
+                    n[i] = f;
+                    si.erase (si.begin() + i);
+                    break;
+                }
+            }
+            k++;
+        }
+        ans = max (ans, n[0]);
+    } while (next_permutation (posl.begin(), posl.end()));
+    return ans;
+}
+
+
+int main()
+{
+    cout << getResult ("1*2+3");
+
+    return 0;
+}

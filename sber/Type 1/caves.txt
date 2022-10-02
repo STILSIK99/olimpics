@@ -1,0 +1,27 @@
+
+int getResult (vector<int> cave)
+{
+    // Write your code here...
+    int maxPath = 0;
+    int ans = -1;
+    for (int i = 0; i < cave.size(); ++i) {
+        int curPath = 0;
+        int position = i;
+        if (cave[i] == -1) continue;
+        vector<bool> used (cave.size(), false);
+        while (cave[position] != -1) {
+            used[position] = 1;
+            position = cave[position];
+            ++curPath;
+            if (used[position] == true) {
+                curPath = 0;
+                break;
+            }
+        }
+        if (curPath > maxPath) {
+            ans = i;
+            maxPath = curPath;
+        }
+    }
+    return ans;
+}

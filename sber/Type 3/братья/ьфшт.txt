@@ -1,0 +1,44 @@
+#include <iostream>
+#include <bits/stdc++.h>
+
+using namespace std;
+
+vector<string> getResult (vector<string> names, vector<string> statements)
+{
+    vector<string> res;
+    set<int> young{0, 1, 2}, mid{0, 1, 2}, old{0, 1, 2};
+    map<string, int> positions;
+    for (int i = 0; i < 3; ++i) positions[names[i]] = i;
+    for (auto statement : statements) {
+        int split = statement.find_first_of ("-");
+        string name = statement.substr (0, split);
+        string state = statement.substr (split + 1, statement.length() - split - 1);
+        if (state == "is youngest") {
+            young.clear();
+            young.insert (positions[name]);
+            mid.erase (positions[name]), old.erase (positions[name]);
+        }
+        if (state == "is oldest") {
+            old.clear();
+            old.insert (positions[name]);
+            mid.erase (positions[name]), young.erase (positions[name]);
+        }
+        if (state  == "is not oldest") {
+            old.erase (positions[name]);
+        }
+        if (state  == "is not youngest") {
+            young.erase (positions[name]);
+        }
+    }
+    while (old.size() + young.size() + mid.size() > 3) {
+        if (old.size() == 1) young.erase (*old.begin()), mid.erase (*old.begin());
+        if (mid.size() == 1) old.erase (*mid.begin()), young.erase (*mid.begin());
+        if (young.size() == 1) old.erase (*young.begin()), mid.erase (*young.begin());
+    }
+    return {names[*young.begin()],names[*mid.begin()],names[ *old.begin()]};
+}
+
+void runCode()
+{
+    // Entrypoint to debug your function
+}
